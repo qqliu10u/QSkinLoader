@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="gray_50">#505050</color>
+
+    <color name="color_white">#FFFFFF</color>
+
+    <color name="color_text">#000000</color>
+    <color name="color_background">#FFFFFF</color>
+    <color name="color_item_normal_bg">@color/color_white</color>
+    <color name="color_item_press_bg">#EEEEEE</color>
+    <color name="activity_bg_color">#f3f4f5</color>
+
+    <color name="color_red">#FF0000</color>
+
+    <color name="color_transprent">#00000000</color>
+</resources>

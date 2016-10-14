@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <Button
+            android:id="@+id/btnViewPagerAndListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg"
+            android:onClick="onClick"
+            android:text="ViewPager嵌套ListView示例"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"
+            skin:enable="true" />
+
+        <Button
+            android:id="@+id/btnRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_bg"
+            android:onClick="onClick"
+            android:text="RecyclerView示例"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"
+            skin:enable="true" />
+
+        <Button
+            android:id="@+id/btnGridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_bg"
+            android:onClick="onClick"
+            android:text="GridView示例"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"
+            skin:enable="true" />
+
+        <Button
+            android:id="@+id/btnDynamicAddView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_bg"
+            android:onClick="onClick"
+            android:text="动态添加View示例"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"
+            skin:enable="true" />
+
+        <Button
+            android:id="@+id/btnCustomView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_bg"
+            android:onClick="onClick"
+            android:text="自定义View属性示例"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"
+            skin:enable="true" />
+
+        <Button
+            android:id="@+id/btnOtherScene"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_bg"
+            android:onClick="onClick"
+            android:text="其他场景示例"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"
+            skin:enable="true" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="ActivityTheme">
+        <item name="android:windowBackground">@color/color_white</item>
+    </style>
+
+    <style name="TransparentTheme">
+        <item name="android:windowBackground">@color/color_transprent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+</resources>

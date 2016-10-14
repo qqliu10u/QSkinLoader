@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/setting_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textColor="@color/color_text"
+        android:background="@color/color_background"
+        android:text="设置"
+        skin:enable="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_recyclerview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_background"
+            android:text="RecyclerView"
+            android:textColor="@color/color_text"
+            skin:enable="true" />
+
+        <Button
+            android:id="@+id/btn_gridview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_background"
+            android:text="GridView"
+            android:textColor="@color/color_text"
+            skin:enable="true" />
+
+        <Button
+            android:id="@+id/btn_dynamic_add_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_background"
+            android:text="DynamicAddView"
+            android:textColor="@color/color_text"
+            skin:enable="true" />
+
+        <Button
+            android:id="@+id/btn_self_def_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_background"
+            android:text="SelfDefineView"
+            android:textColor="@color/color_text"
+            skin:enable="true" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>

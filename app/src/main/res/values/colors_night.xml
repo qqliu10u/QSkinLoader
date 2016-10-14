@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="gray_50_night">#84878c</color>
+
+    <color name="color_white_night">#000000</color>
+
+    <color name="color_text_night">#FFFFFF</color>
+    <color name="color_background_night">#000000</color>
+    <color name="color_item_normal_bg_night">#000000</color>
+    <color name="color_item_press_bg_night">#333333</color>
+    <color name="activity_bg_color_night">#1c1d20</color>
+
+
+    <color name="color_red_night">#00FF00</color>
+</resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/color_background"
+    skin:enable="true"
+    android:padding="15dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="@drawable/btn_bg"
+        android:onClick="onClick"
+        android:text="这是一个Dialog示例"
+        android:textColor="@color/color_text"
+        android:textSize="22sp"
+        skin:enable="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_dialog_confirm"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_bg"
+            android:text="确认"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"
+            skin:enable="true" />
+
+        <Button
+            android:id="@+id/btn_dialog_cancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_bg"
+            android:text="取消"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"
+            skin:enable="true" />
+    </LinearLayout>
+
+</LinearLayout>

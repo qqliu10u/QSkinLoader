@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    skin:enable="true"
+    android:background="@color/color_white"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/btnPopWindowClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg"
+        android:onClick="onClick"
+        android:text="这是一个PopWindow"
+        android:textColor="@color/color_text"
+        android:textSize="16sp"
+        skin:enable="true" />
+
+</LinearLayout>

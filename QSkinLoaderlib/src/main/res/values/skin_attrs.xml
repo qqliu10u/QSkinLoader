@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 设置此属性标识View支持换肤-->
+    <attr name="enable" format="boolean"/>
+    <attr name="drawShadow" format="color|reference"/>
+</resources>

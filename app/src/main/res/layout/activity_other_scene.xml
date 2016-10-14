@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_background"
+    skin:enable="true"
+    android:gravity="center_horizontal"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            skin:enable="true"
+            skin:drawShadow="@color/gray_50"
+            android:src="@mipmap/ic_launcher"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ImageView加蒙层"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"
+            skin:enable="true" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnPopWindow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_bg"
+        android:onClick="onClick"
+        android:text="PopWindow示例"
+        android:textColor="@color/color_text"
+        android:textSize="16sp"
+        skin:enable="true" />
+
+    <Button
+        android:id="@+id/btnDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_bg"
+        android:onClick="onClick"
+        android:text="Dialog示例"
+        android:textColor="@color/color_text"
+        android:textSize="16sp"
+        skin:enable="true" />
+
+    <Button
+        android:id="@+id/btnFloatWindow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_bg"
+        android:onClick="onClick"
+        android:text="悬浮窗示例"
+        android:textColor="@color/color_text"
+        android:textSize="16sp"
+        skin:enable="true" />
+</LinearLayout>

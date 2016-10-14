@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.qcode.skintestdemo">
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <application
+        android:name="org.qcode.demo.SkinDemoApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+        <activity android:name="org.qcode.demo.MainActivity"
+            android:theme="@style/ActivityTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="org.qcode.demo.ui.viewpageandlistview.ViewPagerAndListViewActivity"
+            android:label="RecyclerView" />
+
+        <activity
+            android:name="org.qcode.demo.ui.recyclerview.RecyclerViewActivity"
+            android:label="RecyclerView" />
+
+        <activity
+            android:name="org.qcode.demo.ui.dynamicaddview.DynamicAddViewActivity"
+            android:label="DynamicAddView" />
+
+        <activity
+            android:name="org.qcode.demo.ui.gridview.GridViewActivity"
+            android:label="GridView" />
+
+        <activity
+            android:name="org.qcode.demo.ui.customattr.CustomAttrViewActivity"
+            android:label="SelfDefineView" />
+
+        <activity
+            android:name="org.qcode.demo.ui.otherscene.OtherSceneActivity"
+            android:label="OtherScene"
+            android:theme="@style/TransparentTheme"/>
+    </application>
+
+</manifest>
