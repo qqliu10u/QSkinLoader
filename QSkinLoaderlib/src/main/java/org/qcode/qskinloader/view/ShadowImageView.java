@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import java.lang.ref.WeakReference;
 
 /**
+ * 支持蒙层的ImageView，建议使用此类作为蒙层处理的ImageView的替代，
+ * 给ImageView设置ColorFilter可能会失败，此类为drawable设置蒙层，效果更好点。
+ *
  * qqliu
  * 2016/9/28.
  */

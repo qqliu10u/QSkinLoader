@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--皮肤属性在View内存放时的Tag id; the tag id used to save skin attrs in view's tag-->
     <item name="tag_skin_attr" type="id"/>
 </resources>

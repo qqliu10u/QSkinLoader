@@ -8,6 +8,7 @@ import org.qcode.qskinloader.IResourceManager;
  * 2016/9/25.
  */
 public interface ILoadResourceCallback {
+
     /***
      * 加载皮肤资源开始
      * @param identifier

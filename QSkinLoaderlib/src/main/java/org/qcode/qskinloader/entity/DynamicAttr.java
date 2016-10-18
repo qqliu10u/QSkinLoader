@@ -1,6 +1,8 @@
 package org.qcode.qskinloader.entity;
 
 /**
+ * 动态代码设置皮肤属性的实体类
+ *
  * qqliu
  * 2016/9/25.
  */

@@ -14,6 +14,7 @@ import org.qcode.qskinloader.entity.SkinConstant;
 import java.util.List;
 
 /**
+ * 皮肤属性的辅助帮助类
  * qqliu
  * 2016/9/25.
  */

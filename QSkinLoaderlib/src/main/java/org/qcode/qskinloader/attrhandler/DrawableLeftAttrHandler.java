@@ -10,6 +10,7 @@ import org.qcode.qskinloader.entity.SkinAttrName;
 import org.qcode.qskinloader.IResourceManager;
 
 /**
+ * TextView的drawableLeft属性处理
  * qqliu
  * 2016/9/27.
  */

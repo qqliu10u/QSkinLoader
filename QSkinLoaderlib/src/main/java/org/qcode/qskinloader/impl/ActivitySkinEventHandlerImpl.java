@@ -193,6 +193,9 @@ public class ActivitySkinEventHandlerImpl implements IActivitySkinEventHandler {
             return;
         }
         Activity activity = mActivity.get();
+        if (null == activity) {
+            return;
+        }
 
         Drawable bgDrawable;
         try {

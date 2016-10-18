@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 设置此属性标识View支持换肤-->
-    <attr name="enable" format="boolean"/>
-    <attr name="drawShadow" format="color|reference"/>
+    <!-- 设置此属性标识View支持换肤;this tag indicates a view supports skin change-->
+    <attr name="enable" format="boolean" />
+    <!-- 设置此属性标识View需要绘制阴影; this tag indicates a view should draw a shadow when skin changing-->
+    <attr name="drawShadow" format="color|reference" />
 </resources>
