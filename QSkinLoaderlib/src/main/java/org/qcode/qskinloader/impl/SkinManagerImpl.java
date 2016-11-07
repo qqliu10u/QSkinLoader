@@ -1,6 +1,7 @@
 package org.qcode.qskinloader.impl;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -60,6 +61,14 @@ public class SkinManagerImpl implements ISkinManager {
         mContext = context.getApplicationContext();
         mResourceManager = new ResourceManager(mContext);
         mObservable = new Observable<IActivitySkinEventHandler>();
+        new AsyncTask<String, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(String... params) {
+                return null;
+            }
+
+        }.execute("");
     }
 
     @Override

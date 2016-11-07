@@ -11,7 +11,7 @@ import org.qcode.qskinloader.base.utils.Logging;
 
 /**
  * 资源管理类的实现，获取资源的行为会代理到其内部的mBase实现
- *
+ * <p>
  * qqliu
  * 2016/9/18.
  */

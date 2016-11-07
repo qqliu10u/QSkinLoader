@@ -8,6 +8,7 @@ import android.view.View;
 
 import org.qcode.qskinloader.IActivitySkinEventHandler;
 import org.qcode.qskinloader.ISkinActivity;
+import org.qcode.qskinloader.IViewCreateListener;
 import org.qcode.qskinloader.SkinManager;
 import org.qcode.qskinloader.base.utils.Logging;
 
@@ -35,6 +36,9 @@ public class ActivitySkinEventHandlerImpl implements IActivitySkinEventHandler {
 
     private WeakReference<Activity> mActivity = null;
     private int mWindowBgResId = -1;
+    private SkinInflaterFactoryImpl mSkinInflaterFactoryImpl;
+    private IViewCreateListener mViewCreateListener;
+    private boolean mNeedDelegateViewCreate = true;
 
     public ActivitySkinEventHandlerImpl() {
         mSkinManager = SkinManagerImpl.getInstance();
@@ -48,8 +52,21 @@ public class ActivitySkinEventHandlerImpl implements IActivitySkinEventHandler {
 
         mActivity = new WeakReference<Activity>(activity);
 
-        activity.getLayoutInflater()
-                .setFactory(new SkinInflaterFactoryImpl());
+        if(mNeedDelegateViewCreate) {
+            mSkinInflaterFactoryImpl = new SkinInflaterFactoryImpl();
+            mSkinInflaterFactoryImpl.setViewCreateListener(mViewCreateListener);
+            activity.getLayoutInflater().setFactory(mSkinInflaterFactoryImpl);
+        }
+
+        mSkinManager.addObserver(this);
+    }
+
+    @Override
+    public void setViewCreateListener(IViewCreateListener viewCreateListener) {
+        mViewCreateListener = viewCreateListener;
+        if(null != mSkinInflaterFactoryImpl) {
+            mSkinInflaterFactoryImpl.setViewCreateListener(viewCreateListener);
+        }
     }
 
     @Override
@@ -81,11 +98,11 @@ public class ActivitySkinEventHandlerImpl implements IActivitySkinEventHandler {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        mHasFocus = hasFocus;
-
         if (!mIsSupportSkinChange) {
             return;
         }
+
+        mHasFocus = hasFocus;
 
         if(mHasFocus) {
             if (mNeedRefreshSkin) {
@@ -154,6 +171,12 @@ public class ActivitySkinEventHandlerImpl implements IActivitySkinEventHandler {
         return this;
     }
 
+    @Override
+    public IActivitySkinEventHandler setNeedDelegateViewCreate(boolean needDelegateViewCreate) {
+        mNeedDelegateViewCreate = needDelegateViewCreate;
+        return this;
+    }
+
     private void refreshSkin() {
         if (!mIsSupportSkinChange) {
             return;
@@ -170,6 +193,7 @@ public class ActivitySkinEventHandlerImpl implements IActivitySkinEventHandler {
             public void run() {
                 View contentView = getContentView();
                 mSkinManager.applySkin(contentView, true);
+                mSkinManager.applyWindowViewSkin();
                 refreshWindowBg(contentView);
 
                 //通知Activity做其他刷新操作

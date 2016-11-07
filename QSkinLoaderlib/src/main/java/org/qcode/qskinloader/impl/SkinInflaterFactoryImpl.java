@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import org.qcode.qskinloader.IViewCreateListener;
 import org.qcode.qskinloader.R;
 import org.qcode.qskinloader.attrhandler.SkinAttrFactory;
 import org.qcode.qskinloader.base.utils.CollectionUtils;
@@ -25,9 +26,19 @@ import java.util.List;
 class SkinInflaterFactoryImpl implements LayoutInflater.Factory {
 
     private static final String TAG = "SkinInflaterFactoryImpl";
+    private IViewCreateListener mViewCreateListener;
+
+    public void setViewCreateListener(IViewCreateListener viewCreateListener) {
+        mViewCreateListener = viewCreateListener;
+    }
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
+        View view = null;
+        if(null != mViewCreateListener) {
+            view = mViewCreateListener.beforeCreate(name, context, attrs);
+        }
+
         //只有View设置了skin:enable，才解析属性
         boolean isSkinEnable = attrs.getAttributeBooleanValue(
                 SkinConstant.XML_NAMESPACE,
@@ -37,8 +48,10 @@ class SkinInflaterFactoryImpl implements LayoutInflater.Factory {
             return null;
         }
 
-        //代理创建View
-        View view = createView(context, name, attrs);
+        if(null == view) {
+            //代理创建View
+            view = createView(context, name, attrs);
+        }
 
         if (view == null) {
             return null;
@@ -72,6 +85,10 @@ class SkinInflaterFactoryImpl implements LayoutInflater.Factory {
 //                    view = createFrameWrapper(view, skinAttrShadow);
 //                }
 //            }
+        }
+
+        if(null != mViewCreateListener) {
+            mViewCreateListener.afterCreated(view, name, context, attrs);
         }
 
         return view;
