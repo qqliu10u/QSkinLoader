@@ -12,4 +12,6 @@
 
 
     <color name="color_red_night">#00FF00</color>
+
+    <color name="night_shadow_color">#8e8e8e</color>
 </resources>

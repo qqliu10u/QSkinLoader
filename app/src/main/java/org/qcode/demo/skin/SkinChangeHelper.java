@@ -41,6 +41,10 @@ public class SkinChangeHelper {
 
     private volatile boolean mIsSwitching = false;
 
+    public void init(Context context) {
+        SkinManager.getInstance().init(context);
+    }
+
     public void switchSkinMode(OnSkinChangeListener listener) {
         mIsSwitching = true;
         mIsDefaultMode = !mIsDefaultMode;

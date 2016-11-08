@@ -5,7 +5,6 @@ import android.content.Context;
 
 import org.qcode.demo.base.Settings;
 import org.qcode.demo.skin.SkinChangeHelper;
-import org.qcode.qskinloader.SkinManager;
 
 /**
  * qqliu
@@ -28,9 +27,9 @@ public class SkinDemoApp extends Application {
      * Must call init first
      */
     private void initSkinLoader() {
-        // 加载皮肤框架
-        SkinManager.getInstance().init(this);
-        //皮肤初始化
+        // 初始化皮肤框架
+        SkinChangeHelper.getInstance().init(this);
+        //初始化上次缓存的皮肤
         SkinChangeHelper.getInstance().refreshSkin(null);
     }
 

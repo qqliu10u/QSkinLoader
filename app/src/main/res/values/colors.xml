@@ -13,4 +13,6 @@
     <color name="color_red">#FF0000</color>
 
     <color name="color_transprent">#00000000</color>
+
+    <color name="night_shadow_color">@color/color_transprent</color>
 </resources>

@@ -37,7 +37,6 @@ public class DefTextColorAttrHandler implements ISkinAttrHandler {
 
         if (RES_TYPE_NAME_COLOR.equals(skinAttr.mAttrValueTypeName)) {
             if (SkinConstant.RES_TYPE_NAME_COLOR.equals(skinAttr.mAttrValueTypeName)) {
-                // FIXME 不支持默认int型颜色，皮肤包内是ColorStateList型颜色的情况
                 try {
                     //先尝试按照int型颜色解析
                     int textColor = resourceManager.getColor(

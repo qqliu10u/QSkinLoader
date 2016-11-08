@@ -10,6 +10,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
+        skin:drawShadow="@color/night_shadow_color"
         android:src="@mipmap/ic_launcher"/>
 
     <TextView
