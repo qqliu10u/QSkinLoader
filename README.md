@@ -503,7 +503,7 @@ AndroidChangeSkin是基于View的Tag指定另一套皮肤的资源Id的框架，
 这样的对比结果下，Injor显然更胜一筹，但是Injor存在的最致命缺点就是集成复杂性较高(tag定义)，而AndroidSkinLoader只要在View上加一个标签android:enable="true"即可让View支持夜间模式，所以项目最终选择结合Injor和AndroidSkinLoader实现了一套新的皮肤加载框架——QSkinLoader。三者的区别联系如下：
 ```
 |特性| QSkinLoader | Injor | AndroidSkinLoader|
-|-|:-|:-|:-|
+| - | :- | :- | :- |
 |属性表达|View的Tag内存储属性对象|String类型的Tag|View列表内存储属性对象|
 |属性解析|解析android标签的属性值|解析Tag|解析android标签的属性值|
 |属性保存|存在View的id/tag内|存在View的id/tag内|存在框架内的数据列表内|
