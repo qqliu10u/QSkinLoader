@@ -9,7 +9,7 @@
 #**使用方法**
 ## 基本使用
 由于可以自定义皮肤资源加载过程，QSkinLoader框架内并未提供当前皮肤的保存逻辑（不能支持loadCurrentSkin之类的接口）。因此建议使用框架时封装两个类：一个负责保存当前皮肤（保存皮肤其实就是SharePreference持久化存储，此处略去），一个负责与框架交互，如下：
-``` SkinChangeHelper
+```Java
 public void init(Context context) {
     SkinManager.getInstance().init(context);
 }
@@ -49,7 +49,7 @@ SkinChangeHelper.getInstance().refreshSkin(null);
 
 ###2. Activity初始化与各生命周期调用
 因为换肤一般是整个应用都需要执行的过程，此处建议实现一个基础类(BaseActivity)来封装换肤相关逻辑，此类建议实现接口ISkinActivity，告知是否支持换肤，以及在换肤操作触发后如果界面不在前台是否立刻换肤：
-```
+```Java
 @Override
 public boolean isSupportSkinChange() {
     //告知当前界面是否支持换肤：true支持换肤，false不支持
@@ -70,7 +70,7 @@ public void handleSkinChange() {
 }
 ```
 然后在Activity的onCreate中执行IActivitySkinEventHandler的初始化与配置工作：
-```
+```Java
 //初始化并配置IActivitySkinEventHandler，应在IActivitySkinEventHandler.onCreate之前执行
 mSkinEventHandler = SkinManager.newActivitySkinEventHandler()
         .setSwitchSkinImmediately(isSwitchSkinImmediately())
@@ -84,7 +84,7 @@ mSkinEventHandler.onCreate(this);
 **setNeedDelegateViewCreate**用于设置是否需要代理View创建，因为LayoutInflater的代理View创建Factory只支持设置一次，如果外部已经设置了Factory，则框架内再次设置会引起崩溃，所以框架使用配置与回调来处理此问题。具体见高级使用部分。
 
 其他生命周期回调基本类似，挑两个做实例，如下：
-```
+```Java
 @Override
 protected void onResume() {
     super.onResume();
@@ -108,15 +108,15 @@ public void onWindowFocusChanged(boolean hasFocus) {
 ###3. XML配置
 QSkinLoader只支持引用型资源换肤，所有的颜色定义都应定义在colors.xml内，在使用时引用。
 对于一个布局，需要定义一个skin的命名空间：
-```
+```XML
 xmlns:skin="http://schemas.android.com/android/skin"
 ```
 然后对所有需要换肤的View增加属性：
-```
+```XML
 skin:enable="true"
 ```
 即可完成换肤配置。举例如下：
-```
+```XML
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:skin="http://schemas.android.com/android/skin"
     android:orientation="horizontal"
@@ -142,12 +142,12 @@ skin:enable="true"
 
 ###4. 图片蒙层
 对ImageView/ImageButton可以配置属性：
-```
+```XML
 skin:drawShadow="@color/night_shadow_color"
 ```
 来支持图片蒙层，night_shadow_color是一个颜色引用，在默认情况下建议使用透明色，同时在皮肤包内定义此值为另一个色值（不必须是半透明色）。
 需要注意的是：蒙层的原理是ImageView的ColorFilter，有时候对ImageView设置ColorFilter会失效。但是对Drawable设置ColorFilter基本都会生效，所以如果是对ImageView的Src属性做蒙层，建议使用框架内的ShadowImageView替代ImageView。如下：
-```
+```XML
 <org.qcode.qskinloader.view.ShadowImageView
             android:id="@+id/logo"
             android:layout_width="wrap_content"
@@ -159,21 +159,21 @@ skin:drawShadow="@color/night_shadow_color"
 
 ###5. 换肤与恢复默认皮肤
 **先来看看换肤操作：**
-```
+```Java
 SkinManager.getInstance().loadSkin("_night",
             new SuffixResourceLoader(mContext),
             new MyLoadSkinListener(listener));
 ```
 这是基于资源后缀的换肤方式，对于R.color.color_text，切换到夜间模式时，框架会去找R.color.color_text_night作为夜间模式的资源。
 QSkinLoader换肤框架还支持另一种默认的换肤方式——APK资源换肤，也就是将资源文件定义在独立的APK文件内，此文件可从服务端下载，从而真正实现动态换肤。此方式对现有工程的影响比较小，非常值得推荐。具体方式如下：
-```
+```Java
 SkinUtils.copyAssetSkin(mContext);
 File skin = new File(SkinUtils.getTotalSkinPath(mContext));
 SkinManager.getInstance().loadAPKSkin(
         skin.getAbsolutePath(), new MyLoadSkinListener(listener));
 ```
 当然也可以写成：
-```
+```Java
 SkinManager.getInstance().loadSkin(skin.getAbsolutePath(),
             new APKResourceLoader(mContext),
             new MyLoadSkinListener(listener));
@@ -182,7 +182,7 @@ SkinManager.getInstance().loadSkin(skin.getAbsolutePath(),
 自定义皮肤加载过程见高级使用部分。
 
 **那么怎么恢复默认皮肤呢？**
-```
+```Java
 //恢复到默认皮肤
 SkinManager.getInstance().restoreDefault(SkinConstant.DEFAULT_SKIN,
         new MyLoadSkinListener(listener));
@@ -192,7 +192,7 @@ DEFAULT_SKIN值对框架而言并无意义，框架只是把此值回调到ILoad
 ###6. 动态创建View的皮肤设置
 上文中指出的使用方式是基于XML配置的，如果是在Java代码内如何使用呢？
 QSkinLoader框架提供了一个帮助类ISkinViewHelper来添加/删除View的皮肤属性。此类设计为链式编程方式，提供的接口有：
-```
+```Java
 ISkinViewHelper setViewAttrs(String attrName, int resId);
 ISkinViewHelper setViewAttrs(DynamicAttr... dynamicAttrs);
 ISkinViewHelper setViewAttrs(SkinAttr... skinAttrs);
@@ -210,7 +210,7 @@ void applySkin(boolean applyChild);
 cleanAttrs会清除View的所有皮肤属性，如果传入clearChild为true则遍历所有子元素清除皮肤属性，false只清除自身属性。
 applySkin则对当前View应用皮肤设置，如果传入applyChild为true则遍历所有子元素应用皮肤，false只应用自身。
 假设对一个TextView，动态设置View的皮肤属性大致如下：
-```
+```Java
 SkinManager
     .with(textview)
     .setViewAttrs(SkinAttrName.BACKGROUND, R.color.white)
@@ -221,7 +221,7 @@ SkinManager
 
 ###7. 特定View的换肤管理
 上面的换肤过程都是对Activity的View树做遍历换肤操作的，树根是：
-```
+```Java
 activity.findViewById(android.R.id.content);
 ```
 所有不在这颗树内的View都不能换肤，哪些View不在换肤范围呢？
@@ -229,7 +229,7 @@ Dialog的View、popWindow的View、悬浮窗(WindowManager上直接加View)，�
 需要注意的是：Dialog的交互具有排他型，通常在换肤操作时是不展示的，所以一般可以在show接口调用时做换肤，而不使用IWindowViewManager。
 **怎么对特定View进行换肤管理呢？**
 框架提供了IWindowViewManager接口来提供特定View的管理，支持链式编程，接口如下：
-```
+```Java
 IWindowViewManager addWindowView(View view);
 IWindowViewManager removeWindowView(View view);
 IWindowViewManager clear();
@@ -238,7 +238,7 @@ List<View> getWindowViewList();
 ```
 接口比较简单，主要是增加/删除/清空全局View列表和应用皮肤的操作。
 使用如下：
-```
+```Java
 View popView = LayoutInflater.from(mContext).inflate(
     R.layout.news_list_item_pop, null);
 SkinManager.getInstance().applySkin(popView, true);
@@ -253,14 +253,14 @@ IWindowViewManager内的View是弱引用存储的，所以不会发生内存泄�
 ## 高级使用
 ###1. 自定义View属性处理器
 当项目需要自定义View时，一般都会自定义一些属性，这些属性框架是不支持换肤的，此时需要自定义属性处理器并注册到框架内。自定义属性处理器实现接口ISkinAttrHandler，实现方法：
-```
+```Java
 void apply(View view,
         SkinAttr skinAttr,
         IResourceManager resourceManager);
 ```
 下面是一个示例：
 若有一个自定义CustomTextView，使用属性defTextColor来定义文字颜色，如下：
-```
+```XML
 <org.qcode.demo.ui.customattr.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -271,7 +271,7 @@ void apply(View view,
         skin:enable="true" />
 ```
 则其自定义属性处理器为：
-```
+```Java
 public class DefTextColorAttrHandler implements ISkinAttrHandler {
     public static final String DEF_TEXT_COLOR = "defTextColor";
 
@@ -306,12 +306,12 @@ public class DefTextColorAttrHandler implements ISkinAttrHandler {
 }
 ```
 定义了属性处理器后，再注册到框架内，**注册需要在setContentView之前**：
-```
+```Java
 SkinManager.getInstance().registerSkinAttrHandler(
         DEF_TEXT_COLOR, new DefTextColorAttrHandler());
 ```
 **注意：**自定义属性处理器不一定就是与皮肤相关的属性的处理，也可以是换肤过程中需要对View进行的特定处理。比如RecyclerView换肤的时候要清除内部View缓存（因为其onBindViewHolder不是每次子View显示时都回调），此时，可以定义如下的属性处理器：
-```
+```Java
 class RecyclerViewClearSubAttrHandler implements ISkinAttrHandler {
     @Override
     public void apply(View view, SkinAttr skinAttr, IResourceManager resourceManager) {
@@ -322,7 +322,7 @@ class RecyclerViewClearSubAttrHandler implements ISkinAttrHandler {
 }
 ```
 此处代码有删减，具体见框架内的RecyclerViewClearSubAttrHandler处理器。使用时如下：
-```
+```Java
 SkinAttr clearSubAttr = new SkinAttr(SkinAttrName.CLEAR_RECYCLER_VIEW);
 SkinManager
         .with(view)
@@ -331,12 +331,12 @@ SkinManager
 ###2. 自定义皮肤资源加载
 框架默认支持资源名称后缀加载、APK加载两种换肤方式，如果项目准备采用其他的加载方式，可以通过自定义皮肤资源加载过程来实现。
 自定义皮肤资源加载的核心是实现IResourceLoader接口，接口只有一个方法：
-```
+```Java
 void loadResource(String skinIdentifier,
                       ILoadResourceCallback loadCallBack);
 ```
 也就是定义了从皮肤标识符skinIdentifier加载资源，并在加载过程中通过loadCallBack对外通知加载过程：
-```
+```Java
 public interface ILoadResourceCallback {
     void onLoadStart(String identifier);
     void onLoadSuccess(String identifier, IResourceManager result);
@@ -344,7 +344,7 @@ public interface ILoadResourceCallback {
 }
 ```
 加载开始和失败没啥可说的，主要是加载完成后，需要返回一个资源管理类IResourceManager。这个类定义了如何从指定的换肤流程中抽取对应的皮肤资源：
-```
+```Java
 public interface IResourceManager {
     String getSkinIdentifier();
     Drawable getDrawable(int resId, String resName) throws Resources.NotFoundException;
@@ -353,7 +353,7 @@ public interface IResourceManager {
 }
 ```
 整个过程比较简单，自定义一个加载过程，再返回一个资源管理类即可。下面以后缀资源加载的方式做个示例（摘录部分代码，具体见工程）：
-```
+```Java
 public class SuffixResourceLoader implements IResourceLoader {
     private String mSkinSuffix;
     
@@ -370,7 +370,7 @@ public class SuffixResourceLoader implements IResourceLoader {
     }
 }
 ```
-```
+```Java
 public class SuffixResourceManager implements IResourceManager {
     private Context mContext;
     private Resources mResources;
@@ -407,7 +407,7 @@ public class SuffixResourceManager implements IResourceManager {
 - 如果框架外需要代理View创建，则框架应被告知不能代理View创建，并且提供一个帮助类在外部创建View创建时完成属性解析；
 - 如果框架外不需要代理View创建，但需要解析属性，则提供接口在View创建前后对外回调；
 对于第一点，可以通过IActivitySkinEventHandler.setNeedDelegateViewCreate来告知框架不代理View创建，解析属性的帮助类也可以从IActivitySkinEventHandler内取到，如下：
-```
+```Java
 LayoutInflater.from(this).setFactory(new LayoutInflater.Factory() {
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
@@ -425,7 +425,7 @@ LayoutInflater.from(this).setFactory(new LayoutInflater.Factory() {
 核心代码就是这段解析属性的逻辑。
 
 对于第二点，我们提供接口IViewCreateListener来监听View创建过程：
-```
+```Java
 public interface IViewCreateListener {
         View beforeCreate(String name, Context context, AttributeSet attrs);
         void afterCreated(View view, String name, Context context, AttributeSet attrs);
@@ -437,7 +437,7 @@ beforeCreate在View创建之前执行，可以拦截框架的View创建过程，
 ##- 各种View的换肤应用
 ###1. ViewPager
 ViewPager使用时，应在PagerAdapter的instantiateItem回调中对创建的View应用当前的皮肤。
-```
+```Java
 mViewPager.setAdapter(new PagerAdapter() {
     ......
     @Override
@@ -452,7 +452,7 @@ mViewPager.setAdapter(new PagerAdapter() {
 ```
 ###2. ListView/GridView
 ListView/GridView都继承AbsListView，并使用BaseAdapter作为适配器，其换肤方法为：
-```
+```Java
 listView.setAdapter(new BaseAdapter() {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -468,7 +468,7 @@ listView.setAdapter(new BaseAdapter() {
 需要注意的是，如果ListView存在HeaderView或FooterView时，只使用上面的方法是不完善的，如果换肤时HeaderView/FooterView不在ListView内展示，则换肤失效，此时应调用ListView.mRecycler.clear()方法清除View缓存，具体见[上一篇文章](http://blog.csdn.net/u013478336/article/details/52484322)。
 ###3. RecyclerView
 上一章也大致讲了RecyclerView换肤的注意事项，由于RecyclerView滑动时，其子元素出现的过程不一定会伴有onBindViewHolder回调，导致我们有时出现两种皮肤并存的问题。因此，使用RecyclerView时换肤一定要清除RecyclerView的缓存。
-```
+```Java
 recyclerView.setAdapter(new RecyclerView.Adapter() {
     ......
     @Override
@@ -479,7 +479,7 @@ recyclerView.setAdapter(new RecyclerView.Adapter() {
 });
 ```
 为了应对RecyclerView清除缓存的问题，框架内定义了一个特殊的属性处理器RecyclerViewClearSubAttrHandler，其作用就是在换肤时，清除RecyclerView内的View缓存。具体使用方式如下：
-```
+```Java
 SkinManager
     .with(recyclerView)
     .addViewAttrs(new SkinAttr(SkinAttrName.CLEAR_RECYCLER_VIEW));
