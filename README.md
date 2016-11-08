@@ -501,28 +501,20 @@ AndroidChangeSkin是基于View的Tag指定另一套皮肤的资源Id的框架，
 2. AndroidSkinLoader通过代理LayoutInflater创建View的过程来解析属性id，再从其他资源包中找出相同id的资源来做皮肤切换；不过所有View都被存在框架内，可能会导致内存泄露；并且不支持自定义属性，可扩展性比较差；
 
 这样的对比结果下，Injor显然更胜一筹，但是Injor存在的最致命缺点就是集成复杂性较高(tag定义)，而AndroidSkinLoader只要在View上加一个标签android:enable="true"即可让View支持夜间模式，所以项目最终选择结合Injor和AndroidSkinLoader实现了一套新的皮肤加载框架——QSkinLoader。三者的区别联系如下：
-```
-|特性| QSkinLoader | Injor | AndroidSkinLoader|
-| - | :- | :- | :- |
-|属性表达|View的Tag内存储属性对象|String类型的Tag|View列表内存储属性对象|
-|属性解析|解析android标签的属性值|解析Tag|解析android标签的属性值|
-|属性保存|存在View的id/tag内|存在View的id/tag内|存在框架内的数据列表内|
-|换肤过程|遍历View树，取Tag换肤|遍历View树，解析Tag换肤|遍历框架内的View列表换肤|
-|侵入性|侵入性弱|侵入性偏强|侵入性弱|
-|性能|稍快于Injor，差距不明显|正常|正常|
-|可扩展性|抽象了自定义皮肤加载过程，内置多种换肤方式|支持id映射/皮肤包|仅支持apk皮肤包|
-|自定义属性|支持|支持|支持较弱|
-|内存消耗|比Injor高|正常|比Injor高|
-```
-
 
 ```
-First Header | Second Header  
--------------|--------------   
-Content Cell | Content Cell  
-Content Cell | Content Cell  
+|特性       |QSkinLoader                                |Injor                   |AndroidSkinLoader        |
+|-----------|:------------------------------------------|:-----------------------|:------------------------|
+|属性表达   |View的Tag内存储属性对象                    |String类型的Tag         |View列表内存储属性对象   |
+|属性解析   |解析android标签的属性值                    |解析Tag                 |解析android标签的属性值  |
+|属性保存   |存在View的id/tag内                         |存在View的id/tag内      |存在框架内的数据列表内   |
+|换肤过程   |遍历View树，取Tag换肤                      |遍历View树，解析Tag换肤 |遍历框架内的View列表换肤 |
+|侵入性     |侵入性弱                                   |侵入性偏强              |侵入性弱                 |
+|性能       |稍快于Injor，差距不明显                    |正常                    |正常                     |
+|可扩展性   |抽象了自定义皮肤加载过程，内置多种换肤方式 |支持id映射/皮肤包       |仅支持apk皮肤包          |
+|自定义属性 |支持                                       |支持                    |支持较弱                 |
+|内存消耗   |比Injor高                                  |正常                    |比Injor高                |
 ```
-
 
 整体来讲，QSkinLoader就是在AndroidSkinLoader的代理View创建思想上，解析View的皮肤相关属性，形成属性对象，存到View的id/tag内，在换肤时，遍历所有Activity的View树来实现换肤的过程。
 
