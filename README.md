@@ -514,12 +514,16 @@ AndroidChangeSkin是基于View的Tag指定另一套皮肤的资源Id的框架，
 |自定义属性|支持|支持|支持较弱|
 |内存消耗|比Injor高|正常|比Injor高|
 ```
+
+
 ```
 First Header | Second Header  
 -------------|--------------   
 Content Cell | Content Cell  
 Content Cell | Content Cell  
 ```
+
+
 整体来讲，QSkinLoader就是在AndroidSkinLoader的代理View创建思想上，解析View的皮肤相关属性，形成属性对象，存到View的id/tag内，在换肤时，遍历所有Activity的View树来实现换肤的过程。
 
 ##2. 框架架构与实现
