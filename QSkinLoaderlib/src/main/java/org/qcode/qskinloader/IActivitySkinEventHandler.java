@@ -138,4 +138,12 @@ public interface IActivitySkinEventHandler {
      * called to refresh the activity's skin.
      */
     void handleSkinUpdate();
+
+    /***
+     * 获取皮肤属性解析帮助类
+     *
+     * get a skin attributes parser used when view is creating.
+     * @return
+     */
+    ISkinAttributeParser getSkinAttributeParser();
 }

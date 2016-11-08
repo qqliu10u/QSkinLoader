@@ -8,6 +8,7 @@ import android.view.View;
 
 import org.qcode.qskinloader.IActivitySkinEventHandler;
 import org.qcode.qskinloader.ISkinActivity;
+import org.qcode.qskinloader.ISkinAttributeParser;
 import org.qcode.qskinloader.IViewCreateListener;
 import org.qcode.qskinloader.SkinManager;
 import org.qcode.qskinloader.base.utils.Logging;
@@ -40,6 +41,8 @@ public class ActivitySkinEventHandlerImpl implements IActivitySkinEventHandler {
     private IViewCreateListener mViewCreateListener;
     private boolean mNeedDelegateViewCreate = true;
 
+    private SkinAttributeParser mSkinAttributeParser;
+
     public ActivitySkinEventHandlerImpl() {
         mSkinManager = SkinManagerImpl.getInstance();
     }
@@ -53,7 +56,8 @@ public class ActivitySkinEventHandlerImpl implements IActivitySkinEventHandler {
         mActivity = new WeakReference<Activity>(activity);
 
         if(mNeedDelegateViewCreate) {
-            mSkinInflaterFactoryImpl = new SkinInflaterFactoryImpl();
+            mSkinInflaterFactoryImpl =
+                    new SkinInflaterFactoryImpl(getSkinAttributeParser());
             mSkinInflaterFactoryImpl.setViewCreateListener(mViewCreateListener);
             activity.getLayoutInflater().setFactory(mSkinInflaterFactoryImpl);
         }
@@ -163,6 +167,15 @@ public class ActivitySkinEventHandlerImpl implements IActivitySkinEventHandler {
             //仅置位，不立刻刷新
             mNeedRefreshSkin = true;
         }
+    }
+
+    @Override
+    public ISkinAttributeParser getSkinAttributeParser() {
+        if(null == mSkinAttributeParser) {
+            mSkinAttributeParser = new SkinAttributeParser();
+        }
+
+        return mSkinAttributeParser;
     }
 
     @Override
