@@ -521,6 +521,7 @@ AndroidChangeSkin是基于View的Tag指定另一套皮肤的资源Id的框架，
 ##2. 框架架构与实现
 ###1. 框架架构
 ![QSkinLoader基本架构](http://img.blog.csdn.net/20161108154132875)
+
 - **对外接口层**定义了框架对外支持的能力，如皮肤资源加载与切换、Activity页面换肤逻辑封装、特定View的管理、给View添加皮肤属性等。
 - **皮肤资源加载模块**负责加载皮肤资源，对外接口提供抽象的资源加载过程，默认可以从指定的apk文件中加载，也可以根据指定的映射规则从当前应用的资源内寻找合适的资源（比如按根据后缀区分皮肤：color_text对应color_text_red）。
 - **Activity交互模块**封装换肤过程中与Activity相关的所有逻辑，设计为接收所有Activity的声明周期回调即可。
@@ -530,6 +531,7 @@ AndroidChangeSkin是基于View的Tag指定另一套皮肤的资源Id的框架，
 
 ###2. 最终实现
 ![QSkinLoader类设计](http://img.blog.csdn.net/20161108154206344)
+
 **SkinManager是框架对外接口的封装，提供四个接口，分别对应框架的四种能力：**
 
 1. **ISkinManager：**皮肤管理类，包括加载指定皮肤、恢复默认皮肤、注册属性处理器和对View应用皮肤设置的能力。
