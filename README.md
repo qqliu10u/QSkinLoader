@@ -3,6 +3,9 @@
 **README分三部分：基本简介、使用方法、框架由来与架构设计。
 如果不嫌麻烦，还可以去看文章[夜间模式方案调研](http://blog.csdn.net/u013478336/article/details/52484322)和[QSkinLoader框架介绍](http://blog.csdn.net/u013478336/article/details/53083054)**
 
+#**效果图**
+![QSkinLoader实现夜间模式效果图](https://github.com/qqliu10u/QSkinLoader/blob/master/skin-change-demo.gif)
+
 #**基本简介：**
 QSkinLoader是一个支持多种场景的Android换肤框架。基本原理是通过代理LayoutInflater的View创建过程解析皮肤相关属性（background/src/textColor等），将皮肤相关属性设置到View的Tag内，在切换皮肤时寻找对应的皮肤来完成实时刷新动作。此方案具有代码及XML侵入性小、功能完善（支持Activity/Dialog/悬浮窗/PopWindow等）、无需重启Activity、支持自定义属性换肤、同时支持资源内换肤和独立资源包（下载后换肤）等优点。
 
