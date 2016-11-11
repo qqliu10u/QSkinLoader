@@ -37,7 +37,11 @@ public class ResourceManager implements IResourceManager {
 
     @Override
     public boolean isDefault() {
-        return null == mBase;
+        if(null != mBase) {
+            return mBase.isDefault();
+        }
+
+        return true;
     }
 
     @Override

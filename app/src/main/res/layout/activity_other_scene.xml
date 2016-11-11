@@ -14,12 +14,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical">
-        <ImageView
+
+        <org.qcode.qskinloader.view.ShadowImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             skin:enable="true"
-            skin:drawShadow="@color/gray_50"
+            skin:drawShadow="@color/night_shadow_color"
             android:src="@mipmap/ic_launcher"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

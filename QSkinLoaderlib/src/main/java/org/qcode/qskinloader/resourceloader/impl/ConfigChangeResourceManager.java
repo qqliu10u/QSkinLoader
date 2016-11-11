@@ -38,7 +38,7 @@ public class ConfigChangeResourceManager implements IResourceManager {
 
     @Override
     public boolean isDefault() {
-        return false;
+        return ConfigChangeResourceLoader.MODE_DAY.equals(mSkinIdentifier);
     }
 
     @Override
