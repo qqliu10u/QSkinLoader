@@ -329,8 +329,25 @@ SkinManager
         .addViewAttrs(clearSubAttr);
 ```
 ###2. 自定义皮肤资源加载
-框架默认支持资源名称后缀加载、APK加载两种换肤方式，如果项目准备采用其他的加载方式，可以通过自定义皮肤资源加载过程来实现。
-自定义皮肤资源加载的核心是实现IResourceLoader接口，接口只有一个方法：
+框架默认支持**资源名称后缀加载、APK加载、Android UIMode Configuration变化**三种换肤方式。集成方式如下：
+```Java
+//后缀加载
+SkinManager.getInstance().loadSkin("_night",
+                new SuffixResourceLoader(mContext),
+                new MyLoadSkinListener(listener));
+                
+//APK皮肤包
+SkinManager.getInstance().loadAPKSkin(
+                skin.getAbsolutePath(), 
+                new MyLoadSkinListener(listener));
+                
+//Android UI Configuration变化
+SkinManager.getInstance().loadSkin(
+                ConfigChangeResourceLoader.MODE_NIGHT,
+                new ConfigChangeResourceLoader(mContext),
+                new MyLoadSkinListener(listener));
+```
+如果项目准备采用其他的加载方式，可以通过自定义皮肤资源加载过程来实现。自定义皮肤资源加载的核心是实现IResourceLoader接口，接口只有一个方法：
 ```Java
 void loadResource(String skinIdentifier,
                       ILoadResourceCallback loadCallBack);
