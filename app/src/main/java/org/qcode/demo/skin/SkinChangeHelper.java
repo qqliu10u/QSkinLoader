@@ -2,11 +2,11 @@ package org.qcode.demo.skin;
 
 import android.content.Context;
 
+import org.qcode.demo.SkinDemoApp;
 import org.qcode.demo.utils.UITaskRunner;
+import org.qcode.demo.utils.UIUtil;
 import org.qcode.qskinloader.ILoadSkinListener;
 import org.qcode.qskinloader.SkinManager;
-import org.qcode.demo.SkinDemoApp;
-import org.qcode.demo.utils.UIUtil;
 import org.qcode.qskinloader.resourceloader.impl.SuffixResourceLoader;
 
 import java.io.File;
@@ -56,7 +56,8 @@ public class SkinChangeHelper {
             //恢复到默认皮肤
             SkinManager.getInstance().restoreDefault(SkinConstant.DEFAULT_SKIN, new MyLoadSkinListener(listener));
         } else {
-            changeSkin(listener);
+//            changeSkinByApk(listener);
+            changeSkinBySuffix(listener);
         }
     }
 
@@ -68,7 +69,7 @@ public class SkinChangeHelper {
         return mIsSwitching;
     }
 
-    private void changeSkin(OnSkinChangeListener listener) {
+    private void changeSkinByApk(OnSkinChangeListener listener) {
         SkinUtils.copyAssetSkin(mContext);
 
         File skin = new File(
@@ -79,11 +80,14 @@ public class SkinChangeHelper {
             return;
         }
 
-        SkinManager.getInstance().loadSkin("_night",
+        SkinManager.getInstance().loadAPKSkin(
+                skin.getAbsolutePath(), new MyLoadSkinListener(listener));
+    }
+
+    private void changeSkinBySuffix(OnSkinChangeListener listener) {
+                SkinManager.getInstance().loadSkin("_night",
                 new SuffixResourceLoader(mContext),
                 new MyLoadSkinListener(listener));
-//        SkinManager.getInstance().loadAPKSkin(
-//                skin.getAbsolutePath(), new MyLoadSkinListener(listener));
     }
 
     private class MyLoadSkinListener implements ILoadSkinListener {

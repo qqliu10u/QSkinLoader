@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="gray_50">#84878c</color>
+
+    <color name="color_white">#000000</color>
+
+    <color name="color_text">#FFFFFF</color>
+    <color name="color_background">#000000</color>
+    <color name="color_item_normal_bg">#000000</color>
+    <color name="color_item_press_bg">#333333</color>
+    <color name="activity_bg_color">#1c1d20</color>
+
+
+    <color name="color_red">#00FF00</color>
+
+    <color name="night_shadow_color">#8e8e8e</color>
+</resources>

@@ -37,7 +37,7 @@ public abstract class BaseActivity extends Activity implements ISkinActivity {
                 .setSwitchSkinImmediately(isSwitchSkinImmediately())
                 .setSupportSkinChange(isSupportSkinChange())
                 .setWindowBackgroundResource(getWindowBackgroundResource())
-                .setNeedDelegateViewCreate(false);
+                .setNeedDelegateViewCreate(true);
         mSkinEventHandler.onCreate(this);
 
         initView(this);
