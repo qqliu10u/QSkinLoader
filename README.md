@@ -1,4 +1,4 @@
-# QSkinLoader
+# QSkinLoader换肤框架
 
 **README分三部分：基本简介、使用方法、框架由来与架构设计。
 如果不嫌麻烦，还可以去看文章[夜间模式方案调研](http://blog.csdn.net/u013478336/article/details/52484322)和[QSkinLoader框架介绍](http://blog.csdn.net/u013478336/article/details/53083054)**
