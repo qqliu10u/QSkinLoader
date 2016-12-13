@@ -505,8 +505,8 @@ SkinManager
     .addViewAttrs(new SkinAttr(SkinAttrName.CLEAR_RECYCLER_VIEW));
 ```
 
-#**框架由来与设计思路**
-##1. 框架由来
+#附录
+
 此框架脱胎于项目需要实现夜间模式的需求，在[文章](http://blog.csdn.net/u013478336/article/details/52484322)中，我们列举了常见的几种实现夜间模式切换的方案，并大致对比了一下各种方案的优缺点，此处不再一一列举。仅大致摘录夜间模式的需求分析如下：
 >夜间模式需要对屏幕上的文字/图片/视频三种表现形式做特殊处理，具体细化如下：
 >**1）对界面背景，**白色等浅色背景应该变成黑色/灰色之类的深色背景，以此降低屏幕亮度减少视觉刺激；
@@ -514,47 +514,4 @@ SkinManager
 >**3）对图片，**对图片加蒙层，避免加载浅色图片带来的视觉刺激；
 >**4）对视频，**通常在播放界面增加亮度变化功能，由用户来决定屏幕亮度。
 
-目前成熟的方案各有优缺点，在项目最终选择方案时，需要考虑用户体验、工作量、框架稳定性、代码侵入性等各种因素。对各种实现方案进行考量后，最终项目决定在AndroidChangeSkin和AndroidSkinLoader两个框架内选择一个合适的框架做夜间模式的实现效果。
-AndroidChangeSkin是基于View的Tag指定另一套皮肤的资源Id的框架，此框架有一个优化版本[Injor](https://github.com/hackware1993/injor)，本文基于此版本与[AndroidSkinLoader](https://github.com/fengjundev/Android-Skin-Loader)做对比。整体来看，Injor和AndroidSkinLoader的换肤速度都是满足需求的，大约在200～500ms之间；两者都不需要重启Activity使换肤生效。其他的对比如下：
-
-1. Injor需要占用View的Tag标签来指定资源id，标签内容格式比较复杂（类似：skin:textColor:color_text|Background:color_bg）；但支持自定义View的属性，可扩展性比较好；
-2. AndroidSkinLoader通过代理LayoutInflater创建View的过程来解析属性id，再从其他资源包中找出相同id的资源来做皮肤切换；不过所有View都被存在框架内，可能会导致内存泄露；并且不支持自定义属性，可扩展性比较差；
-
-这样的对比结果下，Injor显然更胜一筹，但是Injor存在的最致命缺点就是集成复杂性较高(tag定义)，而AndroidSkinLoader只要在View上加一个标签android:enable="true"即可让View支持夜间模式，所以项目最终选择结合Injor和AndroidSkinLoader实现了一套新的皮肤加载框架——QSkinLoader。三者的区别联系如下：
-
-```
-|特性       |QSkinLoader                                |Injor                   |AndroidSkinLoader        |
-|-----------|:------------------------------------------|:-----------------------|:------------------------|
-|属性表达   |View的Tag内存储属性对象                    |String类型的Tag         |View列表内存储属性对象   |
-|属性解析   |解析android标签的属性值                    |解析Tag                 |解析android标签的属性值  |
-|属性保存   |存在View的id/tag内                         |存在View的id/tag内      |存在框架内的数据列表内   |
-|换肤过程   |遍历View树，取Tag换肤                      |遍历View树，解析Tag换肤 |遍历框架内的View列表换肤 |
-|侵入性     |侵入性弱                                   |侵入性偏强              |侵入性弱                 |
-|性能       |稍快于Injor，差距不明显                    |正常                    |正常                     |
-|可扩展性   |抽象了自定义皮肤加载过程，内置多种换肤方式 |支持id映射/皮肤包       |仅支持apk皮肤包          |
-|自定义属性 |支持                                       |支持                    |支持较弱                 |
-|内存消耗   |比Injor高                                  |正常                    |比Injor高                |
-```
-
-整体来讲，QSkinLoader就是在AndroidSkinLoader的代理View创建思想上，解析View的皮肤相关属性，形成属性对象，存到View的id/tag内，在换肤时，遍历所有Activity的View树来实现换肤的过程。
-
-##2. 框架架构与实现
-###1. 框架架构
-![QSkinLoader基本架构](http://img.blog.csdn.net/20161108154132875)
-
-- **对外接口层**定义了框架对外支持的能力，如皮肤资源加载与切换、Activity页面换肤逻辑封装、特定View的管理、给View添加皮肤属性等。
-- **皮肤资源加载模块**负责加载皮肤资源，对外接口提供抽象的资源加载过程，默认可以从指定的apk文件中加载，也可以根据指定的映射规则从当前应用的资源内寻找合适的资源（比如按根据后缀区分皮肤：color_text对应color_text_red）。
-- **Activity交互模块**封装换肤过程中与Activity相关的所有逻辑，设计为接收所有Activity的声明周期回调即可。
-- **全局View管理模块**，主要负责一些不在ActivityView树内的View的换肤工作，比如Dialog、popWindow、悬浮窗等View的管理与换肤。
-- 换肤过程中需要处理View的很多种属性，比如textColor/background等，所以需要设计一个**属性处理器**。
-- 框架最核心的价值在于减少集成的复杂性，减少代码侵入性，便于成熟的应用集成使用，而这就是**代理View创建与属性解析模块**应该做的事情。此模块才是此框架最核心的元素，其他模块都是为增强可用性而在此模块外层的各种封装。
-
-###2. 最终实现
-![QSkinLoader类设计](http://img.blog.csdn.net/20161108154206344)
-
-**SkinManager是框架对外接口的封装，提供四个接口，分别对应框架的四种能力：**
-
-1. **ISkinManager：**皮肤管理类，包括加载指定皮肤、恢复默认皮肤、注册属性处理器和对View应用皮肤设置的能力。
-2. **IWindowManager：**负责添加/删除特定View到框架内维护，来确保换肤时此View能正常换肤，通常维护Dialog/popwindow/悬浮窗内持有的View。
-3. **IActivitySkinEventHandler：**定义了换肤框架与Activity交互的所有逻辑，每个需要支持换肤的Activity都应持有此实例，并在生命周期回调中调用此实例相关接口。在Activity初始化时，IActivitySkinEventHandler负责处理拦截LayoutInflater的创建View过程，并解析皮肤相关属性；在换肤管理模块触发了换肤过程时，IActivitySkinEventHandler负责完成所在Activity的换肤工作。
-4. **ISkinViewHelper：**基于链式编程设计。负责对指定View设置/添加一个或多个皮肤相关属性，或者删除所有的皮肤相关属性，同时也支持快捷的对View应用皮肤。
+具体技术选型与框架设计可见文章：http://blog.csdn.net/u013478336/article/details/53083054
