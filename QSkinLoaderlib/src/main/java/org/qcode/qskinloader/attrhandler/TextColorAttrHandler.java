@@ -28,13 +28,14 @@ class TextColorAttrHandler implements ISkinAttrHandler {
         }
 
         TextView tv = (TextView) view;
-        if (SkinConstant.RES_TYPE_NAME_COLOR.equals(skinAttr.mAttrValueTypeName)) {
+        if (SkinConstant.RES_TYPE_NAME_COLOR.equals(skinAttr.mAttrValueTypeName)
+                || SkinConstant.RES_TYPE_NAME_DRAWABLE.equals(skinAttr.mAttrValueTypeName)) {
             //按照ColorStateList引用来解析；
             //context.getResources().getColor()方法可以取纯颜色，也可以取ColorStateList引用内的颜色，
             //如果取的是ColorStateList，则取其中默认颜色；
             //同时，context.getResources().getColorStateList()方法也可以取纯颜色生成一个ColorStateList
             ColorStateList textColor = resourceManager.getColorStateList(
-                    skinAttr.mAttrValueRefId, skinAttr.mAttrValueRefName);
+                    skinAttr.mAttrValueRefId, skinAttr.mAttrValueTypeName, skinAttr.mAttrValueRefName);
             tv.setTextColor(textColor);
         }
 

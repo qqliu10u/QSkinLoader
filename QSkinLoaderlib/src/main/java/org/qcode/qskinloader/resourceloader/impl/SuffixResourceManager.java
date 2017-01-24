@@ -119,10 +119,15 @@ public class SuffixResourceManager implements IResourceManager {
      */
     @Override
     public ColorStateList getColorStateList(int resId, String resName) {
+        return getColorStateList(resId, SkinConstant.RES_TYPE_NAME_COLOR, resName);
+    }
+
+    @Override
+    public ColorStateList getColorStateList(int resId, String typeName, String resName) {
         String trueResName = appendSuffix(resName);
         int trueResId = mResources.getIdentifier(
                 trueResName,
-                SkinConstant.RES_TYPE_NAME_COLOR,
+                typeName,
                 mPackageName);
         ColorStateList colorList = mResources.getColorStateList(trueResId);
 

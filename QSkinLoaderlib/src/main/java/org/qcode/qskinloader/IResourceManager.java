@@ -87,4 +87,14 @@ public interface IResourceManager {
      * @throws Resources.NotFoundException
      */
     ColorStateList getColorStateList(int resId, String resName) throws Resources.NotFoundException;
+
+    /***
+     * get ColorStateList by resource id and name
+     * @param resId
+     * @param typeName
+     * @param resName
+     * @return
+     * @throws Resources.NotFoundException
+     */
+    ColorStateList getColorStateList(int resId, String typeName, String resName) throws Resources.NotFoundException;
 }
