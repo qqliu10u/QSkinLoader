@@ -111,8 +111,13 @@ public class APKResourceManager implements IResourceManager {
      */
     @Override
     public ColorStateList getColorStateList(int resId, String resName) {
+        return getColorStateList(resId, SkinConstant.RES_TYPE_NAME_COLOR, resName);
+    }
+
+    @Override
+    public ColorStateList getColorStateList(int resId, String typeName, String resName) {
         int trueResId = mResources.getIdentifier(
-                resName, SkinConstant.RES_TYPE_NAME_COLOR, mPackageName);
+                resName, typeName, mPackageName);
         ColorStateList colorList = mResources.getColorStateList(trueResId);
 
         return colorList;

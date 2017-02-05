@@ -96,6 +96,19 @@ public class ResourceManager implements IResourceManager {
         return convertToColorStateList(resId);
     }
 
+    @Override
+    public ColorStateList getColorStateList(int resId, String typeName, String resName) {
+        if (null != mBase) {
+            try {
+                return mBase.getColorStateList(resId, typeName, resName);
+            } catch (Exception ex) {
+                Logging.d(TAG, "getColorStateList()| error happened", ex);
+            }
+        }
+
+        return convertToColorStateList(resId);
+    }
+
     public Drawable getDrawable(int resId) {
         if (null != mBase) {
             try {
