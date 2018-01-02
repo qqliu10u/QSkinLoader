@@ -8,6 +8,7 @@ import android.view.View;
 import org.qcode.qskinloader.ISkinAttributeParser;
 import org.qcode.qskinloader.IViewCreateListener;
 import org.qcode.qskinloader.base.utils.Logging;
+import org.qcode.qskinloader.base.utils.ReflectUtils;
 
 /***
  * 代理View的创建，解析与换肤相关的属性
@@ -75,8 +76,12 @@ class SkinInflaterFactoryImpl implements LayoutInflater.Factory {
         View view = null;
         try {
             LayoutInflater inflater = LayoutInflater.from(context);
+            setupInflater(inflater, context);
+
             if (-1 == name.indexOf('.')) {
-                if ("View".equals(name)) {
+                if ("View".equals(name)
+                        || "ViewStub".equals(name)
+                        || "ViewGroup".equals(name)) {
                     view = inflater.createView(
                             name, "android.view.", attrs);
                 }
@@ -98,5 +103,26 @@ class SkinInflaterFactoryImpl implements LayoutInflater.Factory {
         }
 
         return view;
+    }
+
+    private void setupInflater(LayoutInflater inflater, Context context) {
+        //异常，处理context为空，一般不会发生
+        Context inflaterContext = inflater.getContext();
+        if (null == inflaterContext) {
+            ReflectUtils.setFieldValueOpt(inflater, "mContext", context);
+        }
+
+        //设置mConstructorArgs的第一个参数context
+        Object[] constructorArgs = ReflectUtils.getFieldValueOpt(inflater, "mConstructorArgs");
+        if (null == constructorArgs || constructorArgs.length < 2) {
+            //异常，一般不会发生
+            constructorArgs = new Object[2];
+            ReflectUtils.setFieldValueOpt(inflater, "mConstructorArgs", constructorArgs);
+        }
+
+        //如果mConstructorArgs的第一个参数为空，则设置为mContext
+        if (null == constructorArgs[0]) {
+            constructorArgs[0] = inflater.getContext();
+        }
     }
 }
