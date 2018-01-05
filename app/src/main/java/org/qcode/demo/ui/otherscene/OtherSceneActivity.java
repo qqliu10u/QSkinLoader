@@ -8,12 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.qcode.demo.BaseActivity;
+import org.qcode.demo.ui.customattr.DefBackgroundAttrHandler;
 import org.qcode.demo.utils.UIUtil;
 import org.qcode.qskinloader.SkinManager;
+import org.qcode.qskinloader.entity.DynamicAttr;
 import org.qcode.skintestdemo.R;
+
+import static org.qcode.demo.ui.customattr.DefBackgroundAttrHandler.DEF_BACKGROUND;
 
 /**
  * qqliu
@@ -29,7 +34,17 @@ public class OtherSceneActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SkinManager.getInstance().registerSkinAttrHandler(
+                SpannableSkinAttr.HIGHLIGHT_SPANNABLE, new SpannableSkinAttrHandler());
+
         setContentView(R.layout.activity_other_scene);
+
+        TextView textView = (TextView) findViewById(R.id.textviewSpannableSkin);
+        
+        DynamicAttr dynamicAttr = new SpannableSkinAttr(
+                textView.getText().toString(), R.color.color_red);
+        SkinManager.with(textView).addViewAttrs(dynamicAttr);
     }
 
     public void onClick(View view) {
