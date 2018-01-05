@@ -181,19 +181,20 @@ public class SkinViewHelperImpl implements ISkinViewHelper {
             }
 
             SkinAttr attr;
-            //没有设置value
-            if (!dynamicAttr.hasSetValueRef) {
-                attr = SkinAttrFactory.newSkinAttr(
-                        dynamicAttr.mAttrName, 0, null, null);
+            if (dynamicAttr.hasSetValueRef) {
+                //设置了value，则解析resId的名称和类型
+                attr = parseSkinAttr(dynamicAttr.mAttrName, dynamicAttr.mAttrValueRefId);
+            } else {
+                //没有value，直接解析名称
+                attr = SkinAttrFactory.newSkinAttr(dynamicAttr.mAttrName);
+            }
 
-                skinAttrSet.addSkinAttr(attr);
+            if (null == attr) {
                 continue;
             }
 
-            //设置了value，则解析resId的名称和类型
-            attr = parseSkinAttr(dynamicAttr.mAttrName, dynamicAttr.mAttrValueRefId);
-            if (null == attr) {
-                continue;
+            if (dynamicAttr.keepInstance) {
+                attr.mDynamicAttr = dynamicAttr;
             }
 
             skinAttrSet.addSkinAttr(attr);

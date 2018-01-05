@@ -26,6 +26,11 @@ public class SkinAttr {
      */
     public String mAttrValueTypeName;
 
+    /***
+     * 直接存放自定义的属性
+     */
+    public DynamicAttr mDynamicAttr;
+
     public SkinAttr() {
         //empty
     }
@@ -42,6 +47,7 @@ public class SkinAttr {
                 ", mAttrValueRefId=" + mAttrValueRefId +
                 ", mAttrValueRefName='" + mAttrValueRefName + '\'' +
                 ", mAttrValueTypeName='" + mAttrValueTypeName + '\'' +
+                ", mDynamicAttr='" + mDynamicAttr + '\'' +
                 '}';
     }
 }

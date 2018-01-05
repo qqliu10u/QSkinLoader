@@ -4,6 +4,8 @@ package org.qcode.qskinloader.attrhandler;
 import android.text.TextUtils;
 
 import org.qcode.qskinloader.ISkinAttrHandler;
+import org.qcode.qskinloader.base.utils.StringUtils;
+import org.qcode.qskinloader.entity.DynamicAttr;
 import org.qcode.qskinloader.entity.SkinAttr;
 import org.qcode.qskinloader.entity.SkinAttrName;
 
@@ -42,12 +44,32 @@ public class SkinAttrFactory {
     public static SkinAttr newSkinAttr(
             String attrName, int attrValueRefId,
             String attrValueRefName, String typeName) {
+        if (StringUtils.isEmpty(attrName)) {
+            return null;
+        }
+
         SkinAttr skinAttr = new SkinAttr();
 
         skinAttr.mAttrName = attrName;
         skinAttr.mAttrValueRefId = attrValueRefId;
         skinAttr.mAttrValueRefName = attrValueRefName;
         skinAttr.mAttrValueTypeName = typeName;
+        return skinAttr;
+    }
+
+    /***
+     * 基于属性名称生成SkinAttr
+     * @param attrName
+     * @return
+     */
+    public static SkinAttr newSkinAttr(String attrName) {
+        if (StringUtils.isEmpty(attrName)) {
+            return null;
+        }
+
+        SkinAttr skinAttr = new SkinAttr();
+
+        skinAttr.mAttrName = attrName;
         return skinAttr;
     }
 

@@ -21,15 +21,23 @@ public class DynamicAttr {
     /**是否设置了属性值引用*/
     public boolean hasSetValueRef = false;
 
+    /***
+     * 是否保留dynamicAttr；
+     * 子类继承DynamicAttr时可以改变此属性来保留自定义的属性值
+     */
+    public boolean keepInstance = false;
+
     public DynamicAttr(String attrName) {
         this.mAttrName = attrName;
         hasSetValueRef = false;
+        keepInstance = false;
     }
 
     public DynamicAttr(String attrName, int attrValueRefId) {
         this.mAttrName = attrName;
         this.mAttrValueRefId = attrValueRefId;
         hasSetValueRef = true;
+        keepInstance = false;
     }
 
     @Override
@@ -38,6 +46,7 @@ public class DynamicAttr {
                 "mAttrName='" + mAttrName + '\'' +
                 ", mAttrValueRefId=" + mAttrValueRefId +
                 ", hasSetValueRef=" + hasSetValueRef +
+                ", keepInstance=" + keepInstance +
                 '}';
     }
 }

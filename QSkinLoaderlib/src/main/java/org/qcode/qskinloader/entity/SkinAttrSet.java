@@ -1,9 +1,12 @@
 package org.qcode.qskinloader.entity;
 
-import org.qcode.qskinloader.ISkinAttrHandler;
 import org.qcode.qskinloader.base.utils.CollectionUtils;
+import org.qcode.qskinloader.base.utils.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -12,58 +15,54 @@ import java.util.List;
  * 2016/9/24.
  */
 public class SkinAttrSet {
-    private ArrayList<SkinAttr> mAttrList = new ArrayList<SkinAttr>();
+    private HashMap<String, SkinAttr> mAttrMap = new HashMap<String, SkinAttr>();
 
     public SkinAttrSet(SkinAttr... skinAttrs) {
-        if (null != skinAttrs) {
-            for (SkinAttr attr : skinAttrs) {
-                if (null == attr) {
-                    continue;
-                }
-                mAttrList.add(attr);
-            }
-        }
+        this(Arrays.asList(skinAttrs));
     }
 
     public SkinAttrSet(List<SkinAttr> skinAttrs) {
-        if (null != skinAttrs) {
-            for (SkinAttr attr : skinAttrs) {
-                if (null == attr) {
-                    continue;
-                }
-                mAttrList.add(attr);
-            }
-        }
+        saveAttrs(skinAttrs);
     }
 
-    public void addSkinAttrSet(SkinAttrSet skinAttrSet) {
-        if(null == skinAttrSet || CollectionUtils.isEmpty(skinAttrSet.mAttrList)) {
+    private void saveAttrs(List<SkinAttr> skinAttrs) {
+        if (CollectionUtils.isEmpty(skinAttrs)) {
             return;
         }
 
-        mAttrList.addAll(skinAttrSet.mAttrList);
-    }
-
-    public void addSkinAttr(SkinAttr skinAttr) {
-        mAttrList.add(skinAttr);
-    }
-
-    public <T extends ISkinAttrHandler> T findSkinAttr(Class<T> skinAttrClz) {
-        ArrayList<SkinAttr> attrArrayList = (ArrayList<SkinAttr>) mAttrList.clone();
-        if (CollectionUtils.isEmpty(attrArrayList)) {
-            return null;
-        }
-
-        for (SkinAttr attr : attrArrayList) {
-            if(attr.getClass() == skinAttrClz) {
-                return (T) attr;
+        for (SkinAttr attr : skinAttrs) {
+            if (null == attr || StringUtils.isEmpty(attr.mAttrName)) {
+                continue;
             }
+            mAttrMap.put(attr.mAttrName, attr);
         }
-
-        return null;
     }
 
-    public List<SkinAttr> getAttrList() {
-        return (ArrayList<SkinAttr>) mAttrList.clone();
+    public synchronized void addSkinAttrSet(SkinAttrSet skinAttrSet) {
+        if (null == skinAttrSet) {
+            return;
+        }
+
+        List<SkinAttr> setAttrList = skinAttrSet.getAttrList();
+        saveAttrs(setAttrList);
+    }
+
+    public synchronized void addSkinAttr(SkinAttr skinAttr) {
+        if (null == skinAttr || StringUtils.isEmpty(skinAttr.mAttrName)) {
+            return;
+        }
+
+        mAttrMap.put(skinAttr.mAttrName, skinAttr);
+    }
+
+    public synchronized List<SkinAttr> getAttrList() {
+        ArrayList<SkinAttr> resultList = new ArrayList<SkinAttr>();
+
+        Collection<SkinAttr> valueAttrList = mAttrMap.values();
+        if (!CollectionUtils.isEmpty(valueAttrList)) {
+            resultList.addAll(valueAttrList);
+        }
+
+        return resultList;
     }
 }
