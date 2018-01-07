@@ -41,7 +41,7 @@ public class OtherSceneActivity extends BaseActivity {
         setContentView(R.layout.activity_other_scene);
 
         TextView textView = (TextView) findViewById(R.id.textviewSpannableSkin);
-        
+
         DynamicAttr dynamicAttr = new SpannableSkinAttr(
                 textView.getText().toString(), R.color.color_red);
         SkinManager.with(textView).addViewAttrs(dynamicAttr);
